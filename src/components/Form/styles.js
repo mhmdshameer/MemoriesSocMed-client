@@ -1,9 +1,13 @@
+import { createTheme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
 
-export default makeStyles((theme) => ({
+const theme = createTheme({ 
+});
+
+const useStyles = makeStyles({
   root: {
     '& .MuiTextField-root': {
-      margin: theme.spacing(1),
+      margin: theme.spacing(1), 
     },
   },
   paper: {
@@ -21,4 +25,7 @@ export default makeStyles((theme) => ({
   buttonSubmit: {
     marginBottom: 10,
   },
-}));
+});
+
+export default useStyles;
+

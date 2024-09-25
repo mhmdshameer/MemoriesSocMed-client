@@ -6,6 +6,9 @@ import useStyles from "./styles";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import {getPost} from "./actions/posts"
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+
+const theme = createTheme();
 
 const App = () => {
 
@@ -17,6 +20,8 @@ const App = () => {
 
   const classes = useStyles();
   return (
+    <ThemeProvider theme={theme}>
+
     <Container maxWidth="lg">
       <AppBar className={classes.appBar} position="static" color="inherit">
         <Grid2 container alignItems="center" spacing={3}> {/* Use Grid2 container */}
@@ -49,6 +54,7 @@ const App = () => {
         </Container>
       </Grow>
     </Container>
+    </ThemeProvider>
   );
 };
 
