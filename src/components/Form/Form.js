@@ -10,12 +10,13 @@ const theme = createTheme();
 
 const Form = () => {
 
-  const [postData, setPostData] = useState({creator:'', title: '', message: '', tags: '', selectedFile: ''})
+  const [postData, setPostData] = useState({creator:'', title: '', message: '', tags: [''], selectedFile: ''})
   const classes = useStyles();
   const dispatch = useDispatch()
 
   const handleSubmit = (e) =>{
     e.preventDefault()
+    console.log("Form submitted with postData:", postData);  
         dispatch(createPost(postData))
   }
 

@@ -11,11 +11,12 @@ export const getPost = () => async(dispatch) => {
 }
 
 export const createPost =(post) => async (dispatch) => {
+   console.log("Attempting to make API call with post:", post); 
       try {
          const {data} = await api.createPost(post);
          console.log("api response:",data);
          dispatch({type:'CREATE', payload:data})
       } catch (error) {
-         console.log("here",error.message)
+         console.log("Error during api calls",error)
       }
 }

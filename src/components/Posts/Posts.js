@@ -9,22 +9,23 @@ const theme = createTheme();
 
 const Posts = () => {
 
-  const posts = useSelector((state)=> state.posts)
+  const posts = useSelector((state)=> state.posts.data)
   const classes= useStyles()
 
   console.log(posts);
 
   return (
-    <ThemeProvider theme={theme}>
-      !posts.length ? <CircularProgress/> : 
-      <Grid2 className={classes.container} container alignItems='stretch' spacing={3} >
+    !posts?.length ? <CircularProgress/> : (
+        <ThemeProvider theme={theme}>
+             <Grid2 className={classes.container} container alignItems='stretch' spacing={3} >
          {posts.map(post=>(
           <Grid2 key={post.id} item xs={12} sm={6} >
             <Post post={post} />
           </Grid2>
          ))}  
       </Grid2>
-    </ThemeProvider>
+    </ThemeProvider> 
+      )
   )
 }
 
