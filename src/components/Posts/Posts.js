@@ -9,7 +9,7 @@ const theme = createTheme();
 
 const Posts = ({setCurrentId}) => {
 
-  const posts = useSelector((state)=> state.posts.data)
+  const posts = useSelector((state)=> state.posts)
   const classes= useStyles()
 
   return (

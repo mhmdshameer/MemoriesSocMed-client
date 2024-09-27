@@ -30,8 +30,11 @@ const Post = ({post, setCurrentId}) => {
         </Button>
       </div>
       <div className={classes.details}>
-      <CardContent>
       <Typography variant='body2'> {post.tags.map((tag)=> `#${tag} `)}  </Typography>
+      </div>
+      <Typography className={classes.title} variant='h5' gutterBottom>{post.title}</Typography>
+      <CardContent  >
+      <Typography variant='body1' gutterBottom>{post.message}</Typography>
       </CardContent>
       <CardActions className={classes.cardActions}>
         <Button size='small' color='primary' onClick={()=> {}}>
@@ -44,7 +47,6 @@ const Post = ({post, setCurrentId}) => {
           Delete
         </Button>
       </CardActions>
-      </div>
     </Card>
     </ThemeProvider>
   )
