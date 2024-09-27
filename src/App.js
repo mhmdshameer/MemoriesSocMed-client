@@ -4,7 +4,7 @@ import Posts from "./components/Posts/Posts";
 import Form from "./components/Form/Form";
 import useStyles from "./styles";
 import { useDispatch } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {getPost} from "./actions/posts"
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
@@ -13,6 +13,7 @@ const theme = createTheme();
 const App = () => {
 
   const dispatch = useDispatch();
+  const [currentId, setCurrentId] = useState(null);
 
   useEffect(()=>{
      dispatch(getPost());
@@ -45,10 +46,10 @@ const App = () => {
         <Container>
           <Grid2 container justifyContent="space-between" alignItems="stretch" spacing={3}>
             <Grid2 item xs={12} sm={7}>
-              <Posts />
+              <Posts setCurrentId={setCurrentId} />
             </Grid2>
             <Grid2 item xs={12} sm={4}>
-              <Form />
+              <Form currentId={currentId} setCurrentId={setCurrentId}/>
             </Grid2>
           </Grid2>
         </Container>
