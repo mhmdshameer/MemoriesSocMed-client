@@ -4,14 +4,15 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Card, CardActions, CardContent, CardMedia, Button, Typography } from '@mui/material';
 import moment from "moment"
 import { Delete, FavoriteBorder, MoreHoriz } from "@mui/icons-material"
-
+import {useDispatch} from "react-redux"
+import { deletePost } from '../../../actions/posts';
 
 
 const theme = createTheme();
 
 const Post = ({post, setCurrentId}) => {
   const classes = useStyles();
-  console.log(post)
+  const dispatch = useDispatch()
   return (
     <ThemeProvider theme={theme}>
     <Card className={classes.card} >
@@ -30,7 +31,7 @@ const Post = ({post, setCurrentId}) => {
         </Button>
       </div>
       <div className={classes.details}>
-      <Typography variant='body2'> {post.tags.map((tag)=> `#${tag} `)}  </Typography>
+      <Typography variant='body2'> {post.tags?.map((tag)=> `#${tag} `)}  </Typography>
       </div>
       <Typography className={classes.title} variant='h5' gutterBottom>{post.title}</Typography>
       <CardContent  >
@@ -42,7 +43,7 @@ const Post = ({post, setCurrentId}) => {
           Like
           {post.likeCount}
         </Button>
-        <Button size='small' color='primary' onClick={()=> {}}>
+        <Button size='small' color='primary' onClick={()=> dispatch(deletePost(post._id))}>
           <Delete/>
           Delete
         </Button>
