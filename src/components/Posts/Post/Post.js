@@ -5,7 +5,7 @@ import { Card, CardActions, CardContent, CardMedia, Button, Typography } from '@
 import moment from "moment"
 import { Delete, FavoriteBorder, MoreHoriz } from "@mui/icons-material"
 import {useDispatch} from "react-redux"
-import { deletePost } from '../../../actions/posts';
+import { deletePost, likePost } from '../../../actions/posts';
 
 
 const theme = createTheme();
@@ -35,13 +35,14 @@ const Post = ({post, setCurrentId}) => {
       </div>
       <Typography className={classes.title} variant='h5' gutterBottom>{post.title}</Typography>
       <CardContent  >
-      <Typography variant='body1' gutterBottom>{post.message}</Typography>
+      <Typography variant='body2' color="textSecondary" component="p">{post.message}</Typography>
       </CardContent>
       <CardActions className={classes.cardActions}>
-        <Button size='small' color='primary' onClick={()=> {}}>
-          <FavoriteBorder/>
-          Like
-          {post.likeCount}
+        <Button size='small' color='primary' onClick={() => dispatch(likePost(post._id))}>
+          <FavoriteBorder  />
+          &nbsp;Like&nbsp;
+          {post.likeCounts}
+          
         </Button>
         <Button size='small' color='primary' onClick={()=> dispatch(deletePost(post._id))}>
           <Delete/>
