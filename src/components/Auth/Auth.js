@@ -9,20 +9,25 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
+import { GoogleLogin, googleLogout } from "@react-oauth/google";
 import useStyle from "./style";
 import { LockOutlined } from "@mui/icons-material";
 import Input from "./input";
 
 const Auth = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const isSignup = true;
+  const [isSignup, setIsSignup] = useState(false);
   const classes = useStyle();
   const theme = createTheme();
   const handleChange = () => {};
   const handleSubmit = () => {};
-  const switchMode = () => {};
+  const switchMode = () => {
+    setIsSignup((prevIsSignup) => !prevIsSignup);
+    setShowPassword(false);
+  };
   const handleShowPassword = () =>
     setShowPassword((prevShowPassword) => !prevShowPassword);
+
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -34,18 +39,26 @@ const Auth = () => {
             {isSignup ? "Sign Up" : "Sign In"}
           </Typography>
           <form className={classes.form} onSubmit={handleSubmit}>
-            <Grid2 container spacing={2}>
+            <Grid2 container fullWidth spacing={2}>
               {isSignup && (
                 <>
+                  <div>
+                    <GoogleLogin
+                      onSuccess={(response) => console.log(response)}
+                      onError={(error) => console.log(error)}
+                    />
+                  </div>
                   <Input
                     name="firstname"
                     label="First Name"
+                    fullWidth
                     handleChange={handleChange}
                     half
                   />
                   <Input
                     name="secondname"
                     label="Second Name"
+                    fullWidth
                     handleChange={handleChange}
                     half
                   />
@@ -54,18 +67,21 @@ const Auth = () => {
               <Input
                 name="email"
                 label="Email Address"
+                fullWidth
                 handleChange={handleChange}
                 type="input"
               />
               <Input
                 name="password"
                 label="Password"
+                fullWidth
                 handleChange={handleChange}
                 type={showPassword ? "text" : "password"}
                 handleShowPassword={handleShowPassword}
               />
               {isSignup && (
                 <Input
+                  fullWidth
                   name="confirmPassword"
                   label="Repeat Password"
                   handleChange={handleChange}
@@ -73,21 +89,24 @@ const Auth = () => {
                 />
               )}
             </Grid2>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              {isSignup ? "Sign Up" : "Sign In"}{" "}
-            </Button>
+            <Grid2 className={classes.submit}>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+              >
+                {isSignup ? "Sign Up" : "Sign In"}{" "}
+              </Button>
+            </Grid2>
             <Grid2 container justify="flex-end">
-                <Grid2 item>
-                    <Button onClick={switchMode}>
-                        {isSignup? "Already has an account? Sign In": "Don't have an account? Sign Up"}
-                    </Button>
-                </Grid2>
+              <Grid2 item>
+                <Button onClick={switchMode}>
+                  {isSignup
+                    ? "Already has an account? Sign In"
+                    : "Don't have an account? Sign Up"}
+                </Button>
+              </Grid2>
             </Grid2>
           </form>
         </Paper>

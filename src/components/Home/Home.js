@@ -1,7 +1,8 @@
+
 import { Container, Grid2, Grow } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import Posts from '../Posts/Posts'
-import { Form } from 'react-router-dom'
+import Form from "../Form/Form"
 import { useDispatch } from 'react-redux'
 import { getPost } from '../../actions/posts'
 
