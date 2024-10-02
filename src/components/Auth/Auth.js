@@ -15,11 +15,13 @@ import { LockOutlined } from "@mui/icons-material";
 import Input from "./input";
 import { useDispatch } from "react-redux";
 import {jwtDecode} from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 const Auth = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const classes = useStyle();
   const theme = createTheme();
   const handleChange = () => {};
@@ -35,6 +37,8 @@ const Auth = () => {
     const token = res?.credential
     try {
       dispatch({type: 'AUTH', data: {result, token}})
+
+      navigate('/');
     } catch (error) {
       console.log(error)
     }

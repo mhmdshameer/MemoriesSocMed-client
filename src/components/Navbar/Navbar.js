@@ -1,23 +1,38 @@
 import { ThemeProvider } from "@emotion/react";
-import useStyles from "./styles.js";
-import React, { useState } from "react";
-import { AppBar, Avatar, Button, createTheme, Grid2, Toolbar, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { AppBar, Avatar, Button, createTheme,  Grid2, Toolbar, Typography } from "@mui/material";
 import memories from "../../images/memories.png";
-import {Link} from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { deepPurple } from '@mui/material/colors';  // Import deepPurple color
+import { useDispatch } from "react-redux";
+
 const theme = createTheme();
 
 const Navbar = () => {
   const [user, setUser] = useState(() => {
     const storedProfile = localStorage.getItem('profile');
     return storedProfile ? JSON.parse(storedProfile) : null;
-});
-    console.log(JSON.parse(localStorage.getItem('profile')))
-     console.log("here",user)
-  const classes = useStyles();
+  });
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation()
+
+  const logout = () => {
+      dispatch({type: 'LOGOUT'})
+
+      navigate("/");
+      setUser(null);
+  }
+
+  useEffect(()=>{
+    const token = user?.token
+
+    setUser(JSON.parse(localStorage.getItem('profile')));
+  },[location])
+
   return (
     <ThemeProvider theme={theme}>
       <AppBar
-        className={classes.appBar}
         position="static"
         color="inherit"
         sx={{
@@ -25,26 +40,25 @@ const Navbar = () => {
           margin: "30px 0",
           display: "flex",
           flexDirection: "row",
-          justifyContent: "center",
+          justifyContent: "space-between",
           alignItems: "center",
+          padding: '10px 50px',
         }}
       >
         <Grid2 container alignItems="center" spacing={3}>
-          <div className={classes.brandContainer}>
+          <div style={{ display: "flex", alignItems: "center" }}>
             <Grid2 item>
               <Typography
                 component={Link}
                 to="/"
-                className={classes.heading}
                 variant="h2"
-                sx={{ color: "rgba(0,183,255, 1)" }}
+                sx={{ color: "rgba(0,183,255, 1)", textDecoration: "none" }}
               >
                 Memories
               </Typography>
             </Grid2>
             <Grid2 item>
               <img
-                className={classes.image}
                 src={memories}
                 alt="memories"
                 height="60"
@@ -53,18 +67,20 @@ const Navbar = () => {
               />
             </Grid2>
           </div>
-          <Toolbar className={classes.toolbar}>
+        </Grid2>
+          <Toolbar sx={{ display: 'flex', justifyContent: 'flex-end', width: '400px' }}>
             {user ? (
-              <div className={classes.profile}>
-                <Avatar className={classes.purple} src={user.result.picture} alt={user.result.name}>{user.result.name.charAt(0)} </Avatar>
-                 <Typography className={classes.userName} variant="h6" >{user.result.name}</Typography>
-                 <Button variant="contained" className={classes.logout} color="secondary">Logout</Button>
-              </div>  
-            ):(
-                <Button variant="contained" component={Link} to="/auth" color="Primary" >Sign In</Button>
+              <div style={{ display: "flex", justifyContent: "space-between", width: "400px" }}>
+                <Avatar sx={{ bgcolor: deepPurple[500] }} src={user.result.picture} alt={user.result.name}>
+                  {user.result.name.charAt(0)}
+                </Avatar>
+                <Typography variant="h6" sx={{ display: "flex", alignItems: "center" }}>{user.result.name}</Typography>
+                <Button variant="contained" color="secondary" onClick={logout}>Logout</Button>
+              </div>
+            ) : (
+              <Button variant="contained" component={Link} to="/auth" color="primary">Sign In</Button>
             )}
           </Toolbar>
-        </Grid2>
       </AppBar>
     </ThemeProvider>
   );
