@@ -13,10 +13,13 @@ import { GoogleLogin, googleLogout } from "@react-oauth/google";
 import useStyle from "./style";
 import { LockOutlined } from "@mui/icons-material";
 import Input from "./input";
+import { useDispatch } from "react-redux";
+import {jwtDecode} from "jwt-decode";
 
 const Auth = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
+  const dispatch = useDispatch();
   const classes = useStyle();
   const theme = createTheme();
   const handleChange = () => {};
@@ -27,6 +30,18 @@ const Auth = () => {
   };
   const handleShowPassword = () =>
     setShowPassword((prevShowPassword) => !prevShowPassword);
+  const googleSuccess = async (res) => {
+    const result = jwtDecode(res?.credential);
+    const token = res?.credential
+    try {
+      dispatch({type: 'AUTH', data: {result, token}})
+    } catch (error) {
+      console.log(error)
+    }
+  } 
+  const googleFailure = async (err) => {
+
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -44,8 +59,8 @@ const Auth = () => {
                 <>
                   <div>
                     <GoogleLogin
-                      onSuccess={(response) => console.log(response)}
-                      onError={(error) => console.log(error)}
+                      onSuccess={googleSuccess}
+                      onFailure = {googleFailure}
                     />
                   </div>
                   <Input

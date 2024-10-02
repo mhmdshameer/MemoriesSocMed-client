@@ -1,13 +1,18 @@
 import { ThemeProvider } from "@emotion/react";
 import useStyles from "./styles.js";
-import React from "react";
+import React, { useState } from "react";
 import { AppBar, Avatar, Button, createTheme, Grid2, Toolbar, Typography } from "@mui/material";
 import memories from "../../images/memories.png";
 import {Link} from "react-router-dom";
 const theme = createTheme();
 
 const Navbar = () => {
-    const user = null;
+  const [user, setUser] = useState(() => {
+    const storedProfile = localStorage.getItem('profile');
+    return storedProfile ? JSON.parse(storedProfile) : null;
+});
+    console.log(JSON.parse(localStorage.getItem('profile')))
+     console.log("here",user)
   const classes = useStyles();
   return (
     <ThemeProvider theme={theme}>
@@ -51,7 +56,7 @@ const Navbar = () => {
           <Toolbar className={classes.toolbar}>
             {user ? (
               <div className={classes.profile}>
-                <Avatar className={classes.purple} src={user.result.image} alt={user.result.name}>{user.result.name.charAt(0)} </Avatar>
+                <Avatar className={classes.purple} src={user.result.picture} alt={user.result.name}>{user.result.name.charAt(0)} </Avatar>
                  <Typography className={classes.userName} variant="h6" >{user.result.name}</Typography>
                  <Button variant="contained" className={classes.logout} color="secondary">Logout</Button>
               </div>  
