@@ -16,16 +16,30 @@ import Input from "./input";
 import { useDispatch } from "react-redux";
 import {jwtDecode} from "jwt-decode";
 import { useNavigate } from "react-router-dom";
+import {signup, signin} from "../../actions/auth"
+
+const initialState = {firstName: '', lastName: '', email: '', password: '', confirmPassword:''}
 
 const Auth = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
+  const [formData, setFormData] = useState(initialState)
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const classes = useStyle();
   const theme = createTheme();
-  const handleChange = () => {};
-  const handleSubmit = () => {};
+  const handleChange = (e) => {
+    setFormData({...formData,[e.target.name]: e.target.value})
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    if(isSignup){
+      dispatch(signup(formData, navigate))
+    }else{
+      dispatch(signup(formData, navigate))
+    }
+  };
   const switchMode = () => {
     setIsSignup((prevIsSignup) => !prevIsSignup);
     setShowPassword(false);
@@ -44,7 +58,7 @@ const Auth = () => {
     }
   } 
   const googleFailure = async (err) => {
-
+    console.log(err)
   }
 
   return (
@@ -68,15 +82,15 @@ const Auth = () => {
                     />
                   </div>
                   <Input
-                    name="firstname"
+                    name="firstName"
                     label="First Name"
                     fullWidth
                     handleChange={handleChange}
                     half
                   />
                   <Input
-                    name="secondname"
-                    label="Second Name"
+                    name="lastName"
+                    label="Last Name"
                     fullWidth
                     handleChange={handleChange}
                     half
@@ -115,7 +129,7 @@ const Auth = () => {
                 variant="contained"
                 color="primary"
               >
-                {isSignup ? "Sign Up" : "Sign In"}{" "}
+                {isSignup ? "Sign Up" : "Sign In"} 
               </Button>
             </Grid2>
             <Grid2 container justify="flex-end">
