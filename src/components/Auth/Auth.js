@@ -37,7 +37,7 @@ const Auth = () => {
     if(isSignup){
       dispatch(signup(formData, navigate))
     }else{
-      dispatch(signup(formData, navigate))
+      dispatch(signin(formData, navigate))
     }
   };
   const switchMode = () => {
