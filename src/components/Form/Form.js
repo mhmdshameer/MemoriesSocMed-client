@@ -4,6 +4,7 @@ import { Button, Paper, TextField, Typography } from "@mui/material";
 import FileBase from "react-file-base64";
 import { useDispatch, useSelector } from "react-redux";
 import { createPost, updatePost } from "../../actions/posts";
+import ImageUploader from "./ImageUploader";
 
 const theme = createTheme();
 
@@ -14,12 +15,12 @@ const Form = ({ currentId, setCurrentId }) => {
     tags: [""],
     selectedFile: "",
   });
-  const [user] = useState(JSON.parse(localStorage.getItem('profile')));
-  
+  const [user] = useState(JSON.parse(localStorage.getItem("profile")));
+
   const post = useSelector((state) =>
     currentId ? state.posts.find((p) => p._id === currentId) : null
   );
-  
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -41,7 +42,12 @@ const Form = ({ currentId, setCurrentId }) => {
     if (currentId) {
       dispatch(updatePost(currentId, postData));
     } else {
-      dispatch(createPost({ ...postData, name: JSON.parse(localStorage.getItem('profile'))?.result?.name }));
+      dispatch(
+        createPost({
+          ...postData,
+          name: JSON.parse(localStorage.getItem("profile"))?.result?.name,
+        })
+      );
     }
     clear();
   };
@@ -51,10 +57,10 @@ const Form = ({ currentId, setCurrentId }) => {
       <Paper
         sx={{
           padding: theme.spacing(2),
-          backgroundColor: 'white',
-          width: '100%',
-          [theme.breakpoints.down('sm')]: {
-            width: '100%',
+          backgroundColor: "white",
+          width: "100%",
+          [theme.breakpoints.down("sm")]: {
+            width: "100%",
             padding: theme.spacing(1),
           },
         }}
@@ -71,10 +77,10 @@ const Form = ({ currentId, setCurrentId }) => {
       <Paper
         sx={{
           padding: theme.spacing(2),
-          backgroundColor: 'white',
-          width: '100%',
-          [theme.breakpoints.down('sm')]: {
-            width: '100%',
+          backgroundColor: "white",
+          width: "100%",
+          [theme.breakpoints.down("sm")]: {
+            width: "100%",
             padding: theme.spacing(1),
           },
         }}
@@ -83,16 +89,20 @@ const Form = ({ currentId, setCurrentId }) => {
           autoComplete="off"
           noValidate
           sx={{
-            '& .MuiTextField-root': {
+            "& .MuiTextField-root": {
               margin: theme.spacing(1),
-              [theme.breakpoints.down('sm')]: {
+              [theme.breakpoints.down("sm")]: {
                 margin: theme.spacing(0.5), // Reduced margin for small devices
                 padding: theme.spacing(0.5), // Reduced padding for small devices
               },
             },
           }}
           onSubmit={handleSubmit}
-          style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+          }}
         >
           <Typography variant="h6" align="center">
             {currentId ? "Edit" : "Create"} a memory
@@ -105,7 +115,9 @@ const Form = ({ currentId, setCurrentId }) => {
             sx={{ marginBottom: 2 }}
             fullWidth
             value={postData.title}
-            onChange={(e) => setPostData({ ...postData, title: e.target.value })}
+            onChange={(e) =>
+              setPostData({ ...postData, title: e.target.value })
+            }
           />
           <TextField
             name="message"
@@ -114,7 +126,9 @@ const Form = ({ currentId, setCurrentId }) => {
             sx={{ marginBottom: 2 }}
             fullWidth
             value={postData.message}
-            onChange={(e) => setPostData({ ...postData, message: e.target.value })}
+            onChange={(e) =>
+              setPostData({ ...postData, message: e.target.value })
+            }
           />
           <TextField
             name="tags"
@@ -123,20 +137,11 @@ const Form = ({ currentId, setCurrentId }) => {
             sx={{ marginBottom: 2 }}
             fullWidth
             value={postData.tags}
-            onChange={(e) => setPostData({ ...postData, tags: e.target.value.split(",") })}
+            onChange={(e) =>
+              setPostData({ ...postData, tags: e.target.value.split(",") })
+            }
           />
-          <div
-            sx={{
-              width: '97%',
-              margin: '10px 0',
-            }}
-          >
-            <FileBase
-              type="file"
-              multiple={false}
-              onDone={({ base64 }) => setPostData({ ...postData, selectedFile: base64 })}
-            />
-          </div>
+          <ImageUploader setPostData={setPostData} postData={postData} />
           <Button
             sx={{ marginBottom: `${theme.spacing(1)} !important` }} // Adding '!important' like you had
             variant="contained"
@@ -147,7 +152,13 @@ const Form = ({ currentId, setCurrentId }) => {
           >
             Submit
           </Button>
-          <Button variant="contained" color="secondary" size="small" onClick={clear} fullWidth>
+          <Button
+            variant="contained"
+            color="secondary"
+            size="small"
+            onClick={clear}
+            fullWidth
+          >
             Clear
           </Button>
         </form>
