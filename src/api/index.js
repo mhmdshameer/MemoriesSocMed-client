@@ -1,9 +1,27 @@
 import axios from "axios"
 
-const API = axios.create({baseUrl:'http://localhost:5000'})
+const API = axios.create({baseURL:'http://localhost:5000'})
+
+API.interceptors.request.use((req) => {
+    const profile = localStorage.getItem('profile');
+    
+    if (profile) {
+        req.headers.Authorization = `Bearer ${JSON.parse(profile).token}`;
+    }
+    
+    return req;
+})
 
 export const fetchPosts = () => API.get('/posts');
-export const createPost = (newPost) => API.post('/posts', newPost)
+export const createPost = async (newPost) => {
+    try {
+        const response = await API.post('/posts', newPost);
+        return response;
+    } catch (error) {
+        console.error('Error creating post:', error);
+        throw error; // Or handle it as needed
+    }
+};
 export const updatePost = (id, updatedPost) => API.patch(`/posts/${id}`, updatedPost)
 export const deletePost = (id) => API.delete(`/posts/${id}`);
 export const likePost = (id) => API.patch(`/posts/${id}/likePost`);

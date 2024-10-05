@@ -3,21 +3,23 @@ import * as api from "../api";
 
 export const getPost = () => async (dispatch) => {
   try {
+    
     const { data } = await api.fetchPosts();
-
     dispatch({ type: FETCH_ALL, payload: data });
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
   }
 };
 
 export const createPost = (post) => async (dispatch) => {
-  console.log("Attempting to make API call with post:", post);
   try {
+    console.log("Attempting to make API call with post:", post);
     const { data } = await api.createPost(post);
 
     dispatch({ type: CREATE, payload: data });
-  } catch (error) {}
+  } catch (error) {
+    console.log(error)
+  }
 };
 
 export const updatePost = (id, post) => async (dispatch) => {
