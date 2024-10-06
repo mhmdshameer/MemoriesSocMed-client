@@ -1,11 +1,13 @@
 import { ThemeProvider } from "@emotion/react";
 import React, { useEffect, useState } from "react";
-import {jwtDecode} from "jwt-decode"
-import { AppBar, Avatar, Button, createTheme,  Grid2, Toolbar, Typography } from "@mui/material";
+import { jwtDecode } from "jwt-decode";
+import { AppBar, Avatar, Button, createTheme, Grid2, Toolbar, Typography, IconButton, Paper } from "@mui/material";
 import memories from "../../images/memories.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { deepPurple } from '@mui/material/colors';  // Import deepPurple color
+import { deepPurple } from '@mui/material/colors';
 import { useDispatch } from "react-redux";
+import AddBoxIcon from '@mui/icons-material/AddBox';  // Importing feed icon
+import Paginate from "../pagination";
 
 const theme = createTheme();
 
@@ -19,22 +21,21 @@ const Navbar = () => {
   const location = useLocation()
 
   const logout = () => {
-      dispatch({type: 'LOGOUT'})
+    dispatch({ type: 'LOGOUT' });
+    navigate("/");
+    setUser(null);
+  };
 
-      navigate("/");
-      setUser(null);
-  }
-
-  useEffect(()=>{
-    const token = user?.token
-
-    if(token) {
-      const decodedToken = jwtDecode(token)
-    if(decodedToken.exp * 1000 < new Date().getTime()) logout();
+  useEffect(() => {
+    const token = user?.token;
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      if (decodedToken.exp * 1000 < new Date().getTime()) logout();
     }
     setUser(JSON.parse(localStorage.getItem('profile')));
-  },[location, logout])
+  }, [location]);
 
+ 
   return (
     <ThemeProvider theme={theme}>
       <AppBar
@@ -73,19 +74,25 @@ const Navbar = () => {
             </Grid2>
           </div>
         </Grid2>
-          <Toolbar sx={{ display: 'flex', justifyContent: 'flex-end', width: '400px' }}>
-            {user ? (
-              <div style={{ display: "flex", justifyContent: "space-between", width: "400px" }}>
-                <Avatar sx={{ bgcolor: deepPurple[500] }} src={user.result.picture} alt={user.result.name}>
-                  {user.result.name.charAt(0)}
-                </Avatar>
-                <Typography variant="h6" sx={{ display: "flex", alignItems: "center" }}>{user.result.name}</Typography>
-                <Button variant="contained" color="secondary" onClick={logout}>Logout</Button>
-              </div>
-            ) : (
-              <Button variant="contained" component={Link} to="/auth" color="primary">Sign In</Button>
-            )}
-          </Toolbar>
+        <Toolbar sx={{ display: 'flex', justifyContent: 'flex-end', width: '400px' }}>
+          {user ? (
+            <div style={{ display: "flex", justifyContent: "space-between", width: "400px" }}>
+              <Avatar sx={{ bgcolor: deepPurple[500] }} src={user.result.picture} alt={user.result.name}>
+                {user.result.name.charAt(0)}
+              </Avatar>
+              <Typography variant="h6" sx={{ display: "flex", alignItems: "center" }}>{user.result.name}</Typography>
+              <IconButton  component={Link} to="/form" sx={{ marginLeft: "15px" }} color="primary">
+                <AddBoxIcon fontSize="large" />
+              </IconButton>
+              <Button variant="contained" color="secondary" onClick={logout}>Logout</Button>
+            </div>
+          ) : (
+            <Button variant="contained" component={Link} to="/auth" color="primary">Sign In</Button>
+          )}
+          <Paper elevation={6}>
+          <Paginate />
+          </Paper>          
+        </Toolbar>
       </AppBar>
     </ThemeProvider>
   );

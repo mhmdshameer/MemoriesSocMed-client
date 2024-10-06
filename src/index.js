@@ -3,9 +3,9 @@ import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import { configureStore } from '@reduxjs/toolkit';
 import reducers from './reducers';
-import './index.css';
-
 import App from "./App";
+import { AppBar,  } from "@mui/material";
+
 
 const store = configureStore({
   reducer: reducers,
@@ -14,7 +14,18 @@ const store = configureStore({
 
 const root = createRoot(document.getElementById("root"));
 root.render(
-    <Provider store={store}>
-       <App />
-    </Provider>   
+  <Provider store={store}>
+    <AppBar 
+      position="static" 
+      sx={{
+        borderRadius: 2,
+        margin: '30px 0',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+        />
+    <App />
+  </Provider>
 );

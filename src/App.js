@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar/Navbar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./components/Home/Home";
 import Auth from "./components/Auth/Auth";
+import Form from "./components/Form/Form";
 
 const theme = createTheme();
 
@@ -19,6 +20,7 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/auth" element={<Auth />} />
+              <Route path="/form" element={<Form />} />
             </Routes>
           </Container>
         </ThemeProvider>

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { Button, Paper, TextField, Typography } from "@mui/material";
-import FileBase from "react-file-base64";
 import { useDispatch, useSelector } from "react-redux";
 import { createPost, updatePost } from "../../actions/posts";
 import ImageUploader from "./ImageUploader";
@@ -26,8 +25,6 @@ const Form = ({ currentId, setCurrentId }) => {
   useEffect(() => {
     if (post) setPostData(post);
   }, [post]);
-
-
 
   const clear = () => {
     setCurrentId(null);
@@ -80,25 +77,18 @@ const Form = ({ currentId, setCurrentId }) => {
         sx={{
           padding: theme.spacing(2),
           backgroundColor: "white",
-          width: "100%",
-          [theme.breakpoints.down("sm")]: {
-            width: "100%",
-            padding: theme.spacing(1),
+          width: {
+            xs: "100%", // Full width on mobile
+            sm: "500px", // Fixed width on small screens and up
+            md: "600px", // Increase width for medium screens
+            lg: "700px", // Even larger for larger screens
           },
+          margin: 'auto', // Centering the Paper
         }}
       >
         <form
           autoComplete="off"
           noValidate
-          sx={{
-            "& .MuiTextField-root": {
-              margin: theme.spacing(1),
-              [theme.breakpoints.down("sm")]: {
-                margin: theme.spacing(0.5), // Reduced margin for small devices
-                padding: theme.spacing(0.5), // Reduced padding for small devices
-              },
-            },
-          }}
           onSubmit={handleSubmit}
           style={{
             display: "flex",
