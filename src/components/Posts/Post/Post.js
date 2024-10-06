@@ -11,8 +11,8 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import moment from "moment";
 import {
   Delete,
+  Favorite,
   FavoriteBorderOutlined,
-  FavoriteBorderRounded,
   MoreHoriz,
 } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
@@ -30,7 +30,7 @@ const Post = ({ post, setCurrentId }) => {
       ) ? (
         <>
           {" "}
-          <FavoriteBorderRounded fontSize="small" /> &nbsp;
+          <Favorite fontSize="small" /> &nbsp;
           {post.likes.length > 2
             ? `You and ${post.likes.length - 1} others`
             : `${post.likes.length} like${
@@ -95,6 +95,7 @@ const Post = ({ post, setCurrentId }) => {
             color: "white",
           }}
         >
+        {(user?.result?.googleId === post?.creator || user?.result?._id === post?.creator) && 
           <Button
             style={{ color: "white" }}
             size="small"
@@ -102,6 +103,7 @@ const Post = ({ post, setCurrentId }) => {
           >
             <MoreHoriz fontSize="default" />
           </Button>
+        }
         </div>
         <div
           sx={{
@@ -135,9 +137,10 @@ const Post = ({ post, setCurrentId }) => {
             disabled={!user?.result}
             onClick={() => dispatch(likePost(post._id))}
           >
-            <Likes />
+            <Likes  />
             
           </Button>
+          {(user?.result?.googleId === post?.creator || user?.result?._id === post?.creator) && 
           <Button
             size="small"
             color="primary"
@@ -146,6 +149,7 @@ const Post = ({ post, setCurrentId }) => {
             <Delete />
             Delete
           </Button>
+        }
         </CardActions>
       </Card>
     </ThemeProvider>

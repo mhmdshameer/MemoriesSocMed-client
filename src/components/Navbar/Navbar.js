@@ -1,5 +1,6 @@
 import { ThemeProvider } from "@emotion/react";
 import React, { useEffect, useState } from "react";
+import {jwtDecode} from "jwt-decode"
 import { AppBar, Avatar, Button, createTheme,  Grid2, Toolbar, Typography } from "@mui/material";
 import memories from "../../images/memories.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -27,8 +28,12 @@ const Navbar = () => {
   useEffect(()=>{
     const token = user?.token
 
+    if(token) {
+      const decodedToken = jwtDecode(token)
+    if(decodedToken.exp * 1000 < new Date().getTime()) logout();
+    }
     setUser(JSON.parse(localStorage.getItem('profile')));
-  },[location])
+  },[location, logout])
 
   return (
     <ThemeProvider theme={theme}>
