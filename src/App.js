@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Container } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { GoogleOAuthProvider } from "@react-oauth/google";
@@ -13,6 +13,7 @@ const theme = createTheme();
 
 const App = () => {
   const user = JSON.parse(localStorage.getItem('profile'));
+  const [currentId, setCurrentId] = useState(0);
   return (
     <BrowserRouter>
       <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
@@ -21,11 +22,11 @@ const App = () => {
             <Navbar />
             <Routes>
             <Route path="/" element={<Navigate to="/posts" />} />
-              <Route path="/posts" element={<Home />} />
+              <Route path="/posts" element={<Home currentId={currentId} setCurrentId={setCurrentId} />} />
               <Route path="/posts/search" element={<Home />} />
               <Route path="/posts/:id" element={<PostDetails />} />
               <Route path="/auth" element={ user ? <Navigate to="/posts" />: <Auth /> } />
-              <Route path="/form" element={<Form />} />
+              <Route path="/form" element={<Form currentId={currentId} setCurrentId={setCurrentId} />} />
             </Routes>
           </Container>
         </ThemeProvider>

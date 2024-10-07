@@ -4,6 +4,7 @@ import { Button, Paper, TextField, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { createPost, updatePost } from "../../actions/posts";
 import ImageUploader from "./ImageUploader";
+import { useNavigate } from "react-router-dom";
 
 const theme = createTheme();
 
@@ -15,7 +16,7 @@ const Form = ({ currentId, setCurrentId }) => {
     selectedFile: "",
   });
   const user = JSON.parse(localStorage.getItem("profile"));
-
+  const navigate = useNavigate();
   const post = useSelector((state) =>
     currentId ? state.posts.find((p) => p._id === currentId) : null
   );
@@ -29,7 +30,7 @@ const Form = ({ currentId, setCurrentId }) => {
   const clear = () => {
     setCurrentId(null);
     setPostData({
-      title: "",
+      title: "", 
       message: "",
       tags: [""],
       selectedFile: "",
@@ -49,6 +50,7 @@ const Form = ({ currentId, setCurrentId }) => {
       );
     }
     clear();
+    navigate("/");
   };
 
   if (!user?.result.name) {
@@ -78,12 +80,12 @@ const Form = ({ currentId, setCurrentId }) => {
           padding: theme.spacing(2),
           backgroundColor: "white",
           width: {
-            xs: "100%", // Full width on mobile
-            sm: "500px", // Fixed width on small screens and up
-            md: "600px", // Increase width for medium screens
-            lg: "700px", // Even larger for larger screens
+            xs: "100%", 
+            sm: "500px",
+            md: "600px", 
+            lg: "700px", 
           },
-          margin: 'auto', // Centering the Paper
+          margin: 'auto', 
         }}
       >
         <form

@@ -23,31 +23,30 @@ const theme = createTheme();
 const Post = ({ post, setCurrentId }) => {
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("profile"));
+
   const Likes = () => {
     if (post.likes.length > 0) {
       return post.likes.find(
         (like) => like === (user?.result?.googleId || user?.result?._id)
       ) ? (
         <>
-          {" "}
-          <Favorite fontSize="small" /> &nbsp;
+          <Favorite fontSize="small" />
+          &nbsp;
           {post.likes.length > 2
             ? `You and ${post.likes.length - 1} others`
-            : `${post.likes.length} like${
-                post.likes.length > 1 ? "s" : ""
-              }`}{" "}
+            : `${post.likes.length} like${post.likes.length > 1 ? "s" : ""}`}
         </>
       ) : (
         <>
           <FavoriteBorderOutlined fontSize="small" />
-          &nbsp;{post.likes.length} {post.likes.length === 1 ? "like" : "likes"}{" "}
+          &nbsp;{post.likes.length} {post.likes.length === 1 ? "like" : "likes"}
         </>
       );
     }
     return (
       <>
         <FavoriteBorderOutlined fontSize="small" />
-        &nbsp; like{" "}
+        &nbsp; like
       </>
     );
   };
@@ -66,12 +65,13 @@ const Post = ({ post, setCurrentId }) => {
       >
         <CardMedia
           sx={{
-            height: 0,
-            paddingTop: "56.25%", // 16:9 aspect ratio
+            height: 200, // Set a fixed height for uniform image size
+            width: "100%", // Ensures the image takes the full width of the card
+            objectFit: "cover", // Makes sure the image covers the area without distortion
             backgroundColor: "rgba(0, 0, 0, 0.5)",
             backgroundBlendMode: "darken",
           }}
-          image={post.selectedFile}
+          image={post.selectedFile || 'defaultImageURL'}
           title={post.title}
         />
         <div
@@ -87,24 +87,25 @@ const Post = ({ post, setCurrentId }) => {
             {moment(post.createdAt).fromNow()}
           </Typography>
         </div>
-        <div
-          style={{
-            position: "absolute",
-            top: "20px",
-            right: "20px",
-            color: "white",
-          }}
-        >
-        {(user?.result?.googleId === post?.creator || user?.result?._id === post?.creator) && 
-          <Button
-            style={{ color: "white" }}
-            size="small"
-            onClick={() => setCurrentId(post._id)}
+        {(user?.result?.googleId === post?.creator ||
+          user?.result?._id === post?.creator) && (
+          <div
+            style={{
+              position: "absolute",
+              top: "20px",
+              right: "20px",
+              color: "white",
+            }}
           >
-            <MoreHoriz fontSize="default" />
-          </Button>
-        }
-        </div>
+            <Button
+              style={{ color: "white" }}
+              size="small"
+              onClick={() => setCurrentId(post._id)}
+            >
+              <MoreHoriz fontSize="default" />
+            </Button>
+          </div>
+        )}
         <div
           sx={{
             display: "flex",
@@ -137,19 +138,19 @@ const Post = ({ post, setCurrentId }) => {
             disabled={!user?.result}
             onClick={() => dispatch(likePost(post._id))}
           >
-            <Likes  />
-            
+            <Likes />
           </Button>
-          {(user?.result?.googleId === post?.creator || user?.result?._id === post?.creator) && 
-          <Button
-            size="small"
-            color="primary"
-            onClick={() => dispatch(deletePost(post._id))}
-          >
-            <Delete />
-            Delete
-          </Button>
-        }
+          {(user?.result?.googleId === post?.creator ||
+            user?.result?._id === post?.creator) && (
+            <Button
+              size="small"
+              color="primary"
+              onClick={() => dispatch(deletePost(post._id))}
+            >
+              <Delete />
+              Delete
+            </Button>
+          )}
         </CardActions>
       </Card>
     </ThemeProvider>
