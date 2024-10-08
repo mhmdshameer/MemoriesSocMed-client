@@ -13,6 +13,7 @@ API.interceptors.request.use((req) => {
 })
 
 export const fetchPosts = () => API.get('/posts');
+export const fetchSearchPosts = (searchQuery) => API.get(`/posts/search?searchQuery=${searchQuery.search || 'none'} & tags=${searchQuery.tags}`);
 export const createPost = async (newPost) => {
     try {
         const response = await API.post('/posts', newPost);

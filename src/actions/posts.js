@@ -11,6 +11,16 @@ export const getPost = () => async (dispatch) => {
   }
 };
 
+export const getSearchPosts = (searchQuery) => async (dispatch) =>{
+  try {
+    console.log(searchQuery)
+    const {data: {data}} = await api.fetchSearchPosts(searchQuery);
+     console.log(data)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export const createPost = (post) => async (dispatch) => {
   try {
     console.log("Attempting to make API call with post:", post);
