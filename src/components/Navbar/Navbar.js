@@ -34,7 +34,7 @@ const Navbar = () => {
   });
   const [search, setSearch] = useState("");
   const [tags, setTags] = useState([]);
-  const [memorySearch, setMemorySearch] = useState(""); // State for memory search input
+  const [memorySearch, setMemorySearch] = useState(""); 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const query = useQuery();
@@ -59,6 +59,7 @@ const Navbar = () => {
 
   const handleAddTag = (e) => {
     if (e.key === "Enter" && search) {
+      console.log(search)
       setTags([...tags, search]); // Add the tag to the state
       setSearch(""); // Clear the input field
     }
@@ -70,19 +71,19 @@ const Navbar = () => {
   };
 
   const searchPost = () => {
-    const trimmedMemorySearch = memorySearch.trim();
     const trimmedTagSearch = search.trim();
   
-    if (trimmedMemorySearch || trimmedTagSearch || tags.length > 0) {
-      const searchQuery = trimmedMemorySearch || trimmedTagSearch; // Use memorySearch or search as the primary search query
+    if (tags.length > 0) {
       const tagsString = tags.join(","); // Join tags into a single string
-  
-      console.log({ search: searchQuery, tags: tagsString }); // Debugging output
-      dispatch(getSearchPosts({ search: searchQuery, tags: tagsString }));
+      dispatch(getSearchPosts({ search: "", tags: tagsString })); // Use only tags
+    } else if (trimmedTagSearch) {
+      // If no tags are present, use search input
+      dispatch(getSearchPosts({ search: trimmedTagSearch, tags: "" }));
     } else {
       navigate("/");
     }
   };
+  
   return (
     <ThemeProvider theme={theme}>
       <AppBar
@@ -240,8 +241,8 @@ const Navbar = () => {
       label="Search by tags"
       placeholder="Enter tag and press enter"
       value={search}
-      onChange={(e) => setSearch(e.target.value)} // Update the search input state
-      onKeyDown={handleAddTag} // Optional: You can still add tags via keydown event
+      onChange={(e) => setSearch(e.target.value)} 
+      onKeyDown={handleAddTag}
       sx={{
         flexGrow: 1,
         "& .MuiOutlinedInput-root": {
@@ -265,7 +266,7 @@ const Navbar = () => {
         flexWrap: "nowrap", // Prevents chips from wrapping
         gap: "8px",
         marginLeft: "10px",
-        maxWidth: "60%",
+        maxWidth: "70%",
         overflowX: "auto", // Allows scrolling if needed
       }}
     >
