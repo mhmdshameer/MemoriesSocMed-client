@@ -14,7 +14,7 @@ API.interceptors.request.use((req) => {
 
 export const fetchSearchPosts = (searchQuery) =>
   API.get(
-    `/posts/search?searchQuery=${searchQuery.search || "none"}&tags=${
+    `/posts/search?searchQuery=${searchQuery.memorySearch || "none"}&tags=${
       searchQuery.tags
     }`
   );

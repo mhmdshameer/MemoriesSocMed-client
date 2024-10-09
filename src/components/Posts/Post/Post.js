@@ -1,20 +1,8 @@
 import React from "react";
-import {
-  Card,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Button,
-  Typography,
-} from "@mui/material";
+import { Grid, Card, CardActions, CardContent, CardMedia, Button, Typography } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import moment from "moment";
-import {
-  Delete,
-  Favorite,
-  FavoriteBorderOutlined,
-  MoreHoriz,
-} from "@mui/icons-material";
+import { Delete, Favorite, FavoriteBorderOutlined, MoreHoriz } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
 import { deletePost, likePost } from "../../../actions/posts";
 
@@ -54,6 +42,8 @@ const Post = ({ post, setCurrentId }) => {
   return (
     <ThemeProvider theme={theme}>
       <Card
+        raised
+        elevation={6}
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -61,13 +51,15 @@ const Post = ({ post, setCurrentId }) => {
           borderRadius: "15px",
           height: "100%",
           position: "relative",
+          maxWidth: "345px", // Set a fixed max width for consistent card sizes
+          margin: "10px",    // Add some margin between cards
         }}
       >
         <CardMedia
           sx={{
-            height: 200, // Set a fixed height for uniform image size
-            width: "100%", // Ensures the image takes the full width of the card
-            objectFit: "cover", // Makes sure the image covers the area without distortion
+            height: 200, 
+            width: "100%",
+            objectFit: "cover", 
             backgroundColor: "rgba(0, 0, 0, 0.5)",
             backgroundBlendMode: "darken",
           }}
@@ -113,7 +105,10 @@ const Post = ({ post, setCurrentId }) => {
             margin: "20px",
           }}
         >
-          <Typography variant="body2">
+          <Typography variant="body2" 
+            sx={{
+              marginLeft: "10px"
+            }}>
             {post.tags?.map((tag) => `#${tag} `)}
           </Typography>
         </div>

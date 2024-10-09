@@ -1,8 +1,8 @@
-import React from 'react';
-import Post from './Post/Post';
-import { useSelector } from 'react-redux';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { Grid2, CircularProgress } from '@mui/material';
+import React from "react";
+import Post from "./Post/Post";
+import { useSelector } from "react-redux";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { Grid2, CircularProgress } from "@mui/material";
 
 const theme = createTheme();
 
@@ -13,10 +13,9 @@ const Posts = ({ setCurrentId }) => {
     <CircularProgress />
   ) : (
     <ThemeProvider theme={theme}>
-      <Grid2 container alignItems="stretch" spacing={3}>
+      <Grid2 container spacing={3}>
         {posts.map((post) => (
-          <Grid2 key={post.id} item xs={12} sm={6} md={3}>
-            {/* Changed 'sm' to 'md' for medium screens to display 4 per row */}
+          <Grid2 key={post._id} item xs={12} sm={6} md={6} lg={3}>
             <Post post={post} setCurrentId={setCurrentId} />
           </Grid2>
         ))}
