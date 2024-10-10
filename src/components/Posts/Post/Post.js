@@ -6,17 +6,20 @@ import {
   CardMedia,
   Button,
   Typography,
+  Box,
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import moment from "moment";
 import { Delete, Favorite, FavoriteBorderOutlined, MoreHoriz } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
 import { deletePost, likePost } from "../../../actions/posts";
+import { useNavigate } from "react-router-dom";
 
 const theme = createTheme();
 
 const Post = ({ post, setCurrentId }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("profile"));
 
   const Likes = () => {
@@ -46,6 +49,11 @@ const Post = ({ post, setCurrentId }) => {
     );
   };
 
+  const handleEdit = () => {
+    setCurrentId(post._id);
+    navigate("/form");
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <Card
@@ -54,43 +62,79 @@ const Post = ({ post, setCurrentId }) => {
         sx={{
           display: "flex",
           flexDirection: "column",
-          justifyContent: "space-between",
           borderRadius: "15px",
-          height: "100%", // Take full height
-          width: "100%",  // Take full width
-          position: "relative",
+          height: "100%",
+          position: 'relative', // Needed for absolute positioning of overlay and text
         }}
       >
-        <CardMedia
-          sx={{
-            height: 200, // Fixed height for the image
-            width: "100%",
-            objectFit: "cover",
-          }}
-          image={post.selectedFile || "defaultImageURL"}
-          title={post.title}
-        />
-        <div style={{ position: "absolute", top: "20px", left: "20px", color: "white" }}>
-          <Typography variant="h6">{post.name}</Typography>
-          <Typography variant="body2">
-            {moment(post.createdAt).fromNow()}
-          </Typography>
-        </div>
-        {(user?.result?.googleId === post?.creator || user?.result?._id === post?.creator) && (
-          <div style={{ position: "absolute", top: "20px", right: "20px", color: "white" }}>
-            <Button style={{ color: "white" }} size="small" onClick={() => setCurrentId(post._id)}>
-              <MoreHoriz fontSize="default" />
+        <Box sx={{ position: 'relative' }}>
+          <CardMedia
+            sx={{
+              height: 200,
+              objectFit: "cover",
+            }}
+            image={post.selectedFile || "defaultImageURL"}
+            title={post.title}
+          />
+          {/* Faded black overlay on image only */}
+          <Box
+            sx={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: 'rgba(0, 0, 0, 0.5)', // Faded black overlay
+              borderRadius: '15px', // Match border radius of the card
+            }}
+          />
+          {/* Creator name and created at */}
+          <Box
+            sx={{
+              position: 'absolute',
+              top: '10px',
+              left: '10px',
+              color: 'white',
+              zIndex: 2, // Ensure text is above overlay
+            }}
+          >
+            <Typography variant="body2" fontWeight="bold">
+              {post.name}
+            </Typography>
+            <Typography variant="body2">
+              {moment(post.createdAt).fromNow()}
+            </Typography>
+          </Box>
+          {/* Edit button on top of the image */}
+          {user?.result?.googleId === post?.creator || user?.result?._id === post?.creator ? (
+            <Button
+              onClick={handleEdit}
+              sx={{
+                position: 'absolute',
+                top: '10px',
+                right: '10px', 
+                color: "white",
+                border: 'none',
+                borderRadius: '50%',
+                padding: '5px',
+                zIndex: 3, // Ensure button is above the overlay
+              }}
+            >
+              <MoreHoriz />
             </Button>
-          </div>
-        )}
-        <Typography sx={{ padding: "0 16px" }} variant="h5" gutterBottom>
-          {post.title}
-        </Typography>
-        <CardContent>
-          <Typography variant="body2" color="textSecondary" component="p">
+          ) : null}
+        </Box>
+        <CardContent sx={{ flexGrow: 1 }}>
+          <Typography variant="h5" gutterBottom>
+            {post.title}
+          </Typography>
+          <Typography variant="body2" color="textSecondary" component="p" noWrap>
             {post.message.length > 100
               ? `${post.message.substring(0, 100)}...`
               : post.message}
+          </Typography>
+          <Typography variant="body2" color="textSecondary" component="p">
+            {post.tags?.map((tag) => `#${tag} `)}
           </Typography>
         </CardContent>
         <CardActions sx={{ padding: "0 16px 8px 16px", display: "flex", justifyContent: "space-between" }}>

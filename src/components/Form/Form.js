@@ -17,15 +17,16 @@ const Form = ({ currentId, setCurrentId }) => {
   });
   const user = JSON.parse(localStorage.getItem("profile"));
   const navigate = useNavigate();
-  const post = useSelector((state) =>
-    currentId ? state.posts.find((p) => p._id === currentId) : null
-  );
-
+  const post = useSelector((state) => {
+    console.log("Posts in state:", state.posts); // Debugging line
+    return currentId ? state.posts.posts.find((p) => p._id === currentId) : null;
+  });
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (post) setPostData(post);
   }, [post]);
+  console.log(post)
 
   const clear = () => {
     setCurrentId(null);

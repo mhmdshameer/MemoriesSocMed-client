@@ -2,7 +2,7 @@ import React from "react";
 import Post from "./Post/Post";
 import { useSelector } from "react-redux";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { Grid2, CircularProgress } from "@mui/material"; // Removed Box, we'll use Grid directly
+import { Grid, CircularProgress } from "@mui/material";
 
 const theme = createTheme();
 
@@ -13,22 +13,20 @@ const Posts = ({ setCurrentId }) => {
     <CircularProgress />
   ) : (
     <ThemeProvider theme={theme}>
-      <Grid2
+      <Grid
         container
-        spacing={2} // Keeps cards spaced
-        justifyContent="center" // Center content
-        sx={{ width: "100%" }}
+        spacing={2} // Space between cards
+        sx={{
+          justifyContent: 'center', // Centering the grid items
+          width: "100%", // Full width
+        }}
       >
         {posts.map((post) => (
-          <Grid2
-            key={post._id}
-            item
-            xs={12} sm={6} md={4} lg={3} // 4 cards per row on large screens
-          >
+          <Grid key={post._id} item xs={12} sm={6} md={4} lg={3}> 
             <Post post={post} setCurrentId={setCurrentId} />
-          </Grid2>
+          </Grid>
         ))}
-      </Grid2>
+      </Grid>
     </ThemeProvider>
   );
 };

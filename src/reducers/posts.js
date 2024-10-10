@@ -1,24 +1,68 @@
-import { CREATE, UPDATE, FETCH_ALL, DELETE, FETCH_BY_SEARCH } from "../constants/actionTypes";
-const reducer = (state = [], action) => {
-  switch (action.type) {
-    case DELETE:
-      return state.filter((post) => post._id !== action.payload);
+import {
+  CREATE,
+  UPDATE,
+  FETCH_ALL,
+  DELETE,
+  FETCH_BY_SEARCH,
+  START_LOADING,
+  END_LOADING,
+  LIKE
+} from "../constants/actionTypes";
 
-    case UPDATE:
-      return state.map((post) =>
-        post._id === action.payload._id ? action.payload : post
-      );
+const initialState = {
+  posts: [],
+  currentPage: 1,
+  numberOfPages: 0,
+  isLoading: true,
+};
+
+const reducer = (state = initialState, action) => {
+  switch (action.type) {
+    case START_LOADING:
+      return { ...state, isLoading: true };
+      
+    case END_LOADING:
+      return { ...state, isLoading: false };
+
     case FETCH_ALL:
       return {
         ...state,
         posts: action.payload.data,
         currentPage: action.payload.currentPage,
-        numberOfPages: action.payload.numberOfPages
+        numberOfPages: action.payload.numberOfPages,
       };
+
     case FETCH_BY_SEARCH:
-      return action.payload;
+      return { ...state, posts: action.payload };
+
+    case LIKE:
+      return {
+        ...state,
+        posts: state.posts.map((post) =>
+          post._id === action.payload._id ? action.payload : post
+        ),
+      };
+
     case CREATE:
-      return {...state, posts:action.payload};
+      return {
+        ...state,
+        posts: [action.payload, ...state.posts ],
+      };
+
+    case DELETE:
+      return {
+        ...state,
+        posts: state.posts.filter((post) => post._id !== action.payload),
+      };
+
+    case UPDATE:
+      return {
+        ...state,
+        posts: state.posts.map((post) =>
+          post._id === action.payload._id ? action.payload : post
+        ),
+      };
+
     default:
       return state;
   }
