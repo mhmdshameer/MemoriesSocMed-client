@@ -1,5 +1,12 @@
 import React from "react";
-import { Grid, Card, CardActions, CardContent, CardMedia, Button, Typography } from "@mui/material";
+import {
+  Card,
+  CardActions,
+  CardContent,
+  CardMedia,
+  Button,
+  Typography,
+} from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import moment from "moment";
 import { Delete, Favorite, FavoriteBorderOutlined, MoreHoriz } from "@mui/icons-material";
@@ -49,99 +56,49 @@ const Post = ({ post, setCurrentId }) => {
           flexDirection: "column",
           justifyContent: "space-between",
           borderRadius: "15px",
-          height: "100%",
+          height: "100%", // Take full height
+          width: "100%",  // Take full width
           position: "relative",
-          maxWidth: "345px", // Set a fixed max width for consistent card sizes
-          margin: "10px",    // Add some margin between cards
         }}
       >
         <CardMedia
           sx={{
-            height: 200, 
+            height: 200, // Fixed height for the image
             width: "100%",
-            objectFit: "cover", 
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-            backgroundBlendMode: "darken",
+            objectFit: "cover",
           }}
-          image={post.selectedFile || 'defaultImageURL'}
+          image={post.selectedFile || "defaultImageURL"}
           title={post.title}
         />
-        <div
-          style={{
-            position: "absolute",
-            top: "20px",
-            left: "20px",
-            color: "white",
-          }}
-        >
+        <div style={{ position: "absolute", top: "20px", left: "20px", color: "white" }}>
           <Typography variant="h6">{post.name}</Typography>
           <Typography variant="body2">
             {moment(post.createdAt).fromNow()}
           </Typography>
         </div>
-        {(user?.result?.googleId === post?.creator ||
-          user?.result?._id === post?.creator) && (
-          <div
-            style={{
-              position: "absolute",
-              top: "20px",
-              right: "20px",
-              color: "white",
-            }}
-          >
-            <Button
-              style={{ color: "white" }}
-              size="small"
-              onClick={() => setCurrentId(post._id)}
-            >
+        {(user?.result?.googleId === post?.creator || user?.result?._id === post?.creator) && (
+          <div style={{ position: "absolute", top: "20px", right: "20px", color: "white" }}>
+            <Button style={{ color: "white" }} size="small" onClick={() => setCurrentId(post._id)}>
               <MoreHoriz fontSize="default" />
             </Button>
           </div>
         )}
-        <div
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            margin: "20px",
-          }}
-        >
-          <Typography variant="body2" 
-            sx={{
-              marginLeft: "10px"
-            }}>
-            {post.tags?.map((tag) => `#${tag} `)}
-          </Typography>
-        </div>
         <Typography sx={{ padding: "0 16px" }} variant="h5" gutterBottom>
           {post.title}
         </Typography>
         <CardContent>
           <Typography variant="body2" color="textSecondary" component="p">
-            {post.message}
+            {post.message.length > 100
+              ? `${post.message.substring(0, 100)}...`
+              : post.message}
           </Typography>
         </CardContent>
-        <CardActions
-          sx={{
-            padding: "0 16px 8px 16px",
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-          <Button
-            size="small"
-            color="primary"
-            disabled={!user?.result}
-            onClick={() => dispatch(likePost(post._id))}
-          >
+        <CardActions sx={{ padding: "0 16px 8px 16px", display: "flex", justifyContent: "space-between" }}>
+          <Button size="small" color="primary" disabled={!user?.result} onClick={() => dispatch(likePost(post._id))}>
             <Likes />
           </Button>
-          {(user?.result?.googleId === post?.creator ||
-            user?.result?._id === post?.creator) && (
-            <Button
-              size="small"
-              color="primary"
-              onClick={() => dispatch(deletePost(post._id))}
-            >
+          {(user?.result?.googleId === post?.creator || user?.result?._id === post?.creator) && (
+            <Button size="small" color="primary" onClick={() => dispatch(deletePost(post._id))}>
               <Delete />
               Delete
             </Button>

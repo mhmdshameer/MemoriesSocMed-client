@@ -15,7 +15,8 @@ import {
   TextField,
   Chip,
 } from "@mui/material";
-import memories from "../../images/memories.png";
+import memoriesLogo from "../../images/memoriesLogo.png";
+import memoriesText from "../../images/memoriesText.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { deepPurple } from "@mui/material/colors";
 import { useDispatch } from "react-redux";
@@ -69,15 +70,18 @@ const Navbar = () => {
     setTags(tags.filter((tag) => tag !== tagToDelete));
   };
 
-  const searchPost= () => {
-    if(memorySearch.trim() || tags) {
-      dispatch(getSearchPosts({memorySearch, tags: tags.join(',')}));
-      navigate(`/posts/search?searchQuery=${memorySearch|| 'none'}&tags=${tags.join(',')}`)
-    }else{
-      navigate("/")
+  const searchPost = () => {
+    if (memorySearch.trim() || tags) {
+      dispatch(getSearchPosts({ memorySearch, tags: tags.join(",") }));
+      navigate(
+        `/posts/search?searchQuery=${memorySearch || "none"}&tags=${tags.join(
+          ","
+        )}`
+      );
+    } else {
+      navigate("/");
     }
-  }
-
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -97,23 +101,16 @@ const Navbar = () => {
         <Grid2 container alignItems="center" spacing={3}>
           <div style={{ display: "flex", alignItems: "center" }}>
             <Grid2 item>
-              <Typography
-                component={Link}
-                to="/"
-                variant="h4"
-                sx={{ color: "rgba(0,183,255, 1)", textDecoration: "none" }}
-              >
-                Memories
-              </Typography>
-            </Grid2>
-            <Grid2 item>
-              <img
-                src={memories}
-                alt="memories"
-                height="50"
-                width="50"
-                style={{ marginLeft: "15px" }}
-              />
+              <Link to="/">
+                <img src={memoriesText} alt="memoriesText" height="45px" />
+                <img
+                  src={memoriesLogo}
+                  alt="memoriesLogo"
+                  height="40px"
+                  width="40px"
+                  style={{ marginLeft: "15px" }}
+                />
+              </Link>
             </Grid2>
           </div>
         </Grid2>
@@ -183,7 +180,7 @@ const Navbar = () => {
             alignItems: "center", // Ensure the pagination is centered
           }}
         >
-          <Paginate />
+          <Paginate page={page}  />
         </Paper>
 
         {/* Search Memories AppBar with flex: 1 */}

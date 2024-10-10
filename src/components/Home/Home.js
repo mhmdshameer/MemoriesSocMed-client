@@ -10,12 +10,7 @@ import { getPost } from '../../actions/posts'
 
 const Home = ({currentId,setCurrentId}) => {
     const dispatch = useDispatch();
-   
 
-  
-    useEffect(() => {
-      dispatch(getPost());
-    }, [currentId,dispatch]);
   
   return (
     <Grow in>
