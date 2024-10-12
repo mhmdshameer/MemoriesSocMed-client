@@ -43,6 +43,9 @@ const Navbar = () => {
   const searchQuery = query.get("searchQuery");
   const location = useLocation();
 
+  const isHomePage =
+    location.pathname === "/posts" || location.search.startsWith("?page=");
+
   const logout = () => {
     dispatch({ type: "LOGOUT" });
     navigate("/");
@@ -62,7 +65,7 @@ const Navbar = () => {
     if (e.key === "Enter" && search) {
       console.log(search);
       setTags([...tags, search]);
-      setSearch(""); 
+      setSearch("");
     }
   };
 
@@ -153,140 +156,141 @@ const Navbar = () => {
           )}
         </Toolbar>
       </AppBar>
-
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center", // Spread the items out
-          alignItems: "center", // Vertically align them
-          gap: "20px", // Optional: Space between components
-          marginTop: "-20px",
-          marginBottom: "20px",
-        }}
-      >
-        {/* Pagination Component with flex: 2 */}
-        <Paper
-          elevation={6}
-          sx={{
-            padding: "5px 10px",
-            borderRadius: 2,
-            backgroundColor: "transparent",
-            transition: "background-color 0.3s ease",
-            "&:hover": {
-              backgroundColor: "#f5f5f5",
-            },
-            height: "40px",
-            display: "flex",
-            alignItems: "center", // Ensure the pagination is centered
-          }}
-        >
-          <Paginate page={page}  />
-        </Paper>
-
-        {/* Search Memories AppBar with flex: 1 */}
-        <AppBar
-          position="static"
-          color="inherit"
+      {isHomePage && (
+        <Box
           sx={{
             display: "flex",
-            flexDirection: "row",
-            borderRadius: "10px",
-            alignItems: "center",
-            padding: "5px 10px",
-            backgroundColor: "transparent",
-            transition: "background-color 0.3s ease",
-            "&:hover": {
-              backgroundColor: "#f5f5f5",
-            },
-            height: "50px",
-            flexGrow: 1,
-            maxWidth: "500px",
+            justifyContent: "center", // Spread the items out
+            alignItems: "center", // Vertically align them
+            gap: "20px", // Optional: Space between components
+            marginTop: "-20px",
+            marginBottom: "20px",
           }}
         >
-          {/* Input Field for Search Memories */}
-          <TextField
-            variant="outlined"
-            label="Search Memories" // New TextField for searching memories
-            placeholder="Type to search memories..."
-            value={memorySearch} // New state variable for memory search
-            onChange={(e) => setMemorySearch(e.target.value)} // Update memory search state
-            onKeyDown={(e) => e.key === "Enter" && searchPost()} // Trigger search on Enter
+          {/* Pagination Component with flex: 2 */}
+          <Paper
+            elevation={6}
             sx={{
-              flexGrow: 1,
-              "& .MuiOutlinedInput-root": {
-                "& fieldset": {
-                  border: "none",
-                },
-                "&:hover fieldset": {
-                  border: "none",
-                },
-                "&.Mui-focused fieldset": {
-                  border: "none",
-                },
+              padding: "5px 10px",
+              borderRadius: 2,
+              backgroundColor: "transparent",
+              transition: "background-color 0.3s ease",
+              "&:hover": {
+                backgroundColor: "#f5f5f5",
               },
+              height: "40px",
+              display: "flex",
+              alignItems: "center", // Ensure the pagination is centered
             }}
-          />
+          >
+            <Paginate page={page} />
+          </Paper>
 
-          {/* Existing Input Field for Search by tags */}
-          <TextField
-            variant="outlined"
-            label="Search by tags"
-            placeholder="Enter tag and press enter"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            onKeyDown={handleAddTag}
-            sx={{
-              flexGrow: 1,
-              "& .MuiOutlinedInput-root": {
-                "& fieldset": {
-                  border: "none",
-                },
-                "&:hover fieldset": {
-                  border: "none",
-                },
-                "&.Mui-focused fieldset": {
-                  border: "none",
-                },
-              },
-            }}
-          />
-
-          {/* Chips Display */}
-          <Box
+          {/* Search Memories AppBar with flex: 1 */}
+          <AppBar
+            position="static"
+            color="inherit"
             sx={{
               display: "flex",
-              flexWrap: "nowrap", // Prevents chips from wrapping
-              gap: "8px",
-              marginLeft: "10px",
-              maxWidth: "70%",
-              overflowX: "auto", // Allows scrolling if needed
+              flexDirection: "row",
+              borderRadius: "10px",
+              alignItems: "center",
+              padding: "5px 10px",
+              backgroundColor: "transparent",
+              transition: "background-color 0.3s ease",
+              "&:hover": {
+                backgroundColor: "#f5f5f5",
+              },
+              height: "50px",
+              flexGrow: 1,
+              maxWidth: "500px",
             }}
           >
-            {tags.map((tag, index) => (
-              <Chip
-                key={index}
-                label={tag}
-                onDelete={() => handleDelete(tag)} // Handle tag deletion
-                sx={{
-                  backgroundColor: "transparent",
-                  border: "1px solid gray",
-                  whiteSpace: "nowrap",
-                }}
-              />
-            ))}
-          </Box>
+            {/* Input Field for Search Memories */}
+            <TextField
+              variant="outlined"
+              label="Search Memories" // New TextField for searching memories
+              placeholder="Type to search memories..."
+              value={memorySearch} // New state variable for memory search
+              onChange={(e) => setMemorySearch(e.target.value)} // Update memory search state
+              onKeyDown={(e) => e.key === "Enter" && searchPost()} // Trigger search on Enter
+              sx={{
+                flexGrow: 1,
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    border: "none",
+                  },
+                  "&:hover fieldset": {
+                    border: "none",
+                  },
+                  "&.Mui-focused fieldset": {
+                    border: "none",
+                  },
+                },
+              }}
+            />
 
-          {/* Search Button */}
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={searchPost} // Trigger search when clicked
-            sx={{ marginLeft: "10px" }} // Space between button and chips
-          >
-            Search
-          </Button>
-        </AppBar>
-      </Box>
+            {/* Existing Input Field for Search by tags */}
+            <TextField
+              variant="outlined"
+              label="Search by tags"
+              placeholder="Enter tag and press enter"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={handleAddTag}
+              sx={{
+                flexGrow: 1,
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    border: "none",
+                  },
+                  "&:hover fieldset": {
+                    border: "none",
+                  },
+                  "&.Mui-focused fieldset": {
+                    border: "none",
+                  },
+                },
+              }}
+            />
+
+            {/* Chips Display */}
+            <Box
+              sx={{
+                display: "flex",
+                flexWrap: "nowrap", // Prevents chips from wrapping
+                gap: "8px",
+                marginLeft: "10px",
+                maxWidth: "70%",
+                overflowX: "auto", // Allows scrolling if needed
+              }}
+            >
+              {tags.map((tag, index) => (
+                <Chip
+                  key={index}
+                  label={tag}
+                  onDelete={() => handleDelete(tag)} // Handle tag deletion
+                  sx={{
+                    backgroundColor: "transparent",
+                    border: "1px solid gray",
+                    whiteSpace: "nowrap",
+                  }}
+                />
+              ))}
+            </Box>
+
+            {/* Search Button */}
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={searchPost} // Trigger search when clicked
+              sx={{ marginLeft: "10px" }} // Space between button and chips
+            >
+              Search
+            </Button>
+          </AppBar>
+        </Box>
+      )}
     </ThemeProvider>
   );
 };
