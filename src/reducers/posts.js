@@ -7,7 +7,8 @@ import {
   START_LOADING,
   END_LOADING,
   LIKE,
-  FETCH_POST
+  FETCH_POST,
+  COMMENT
 } from "../constants/actionTypes";
 
 const initialState = {
@@ -44,6 +45,15 @@ const reducer = (state = initialState, action) => {
         ...state,
         posts: state.posts.map((post) =>
           post._id === action.payload._id ? action.payload : post
+        ),
+      };
+    case COMMENT:
+      return {
+        ...state,
+        posts: state.posts.map((post) =>{
+          if(post._id === action.payload._id ? action.payload : post) return action.payload
+          return post;
+        }
         ),
       };
 

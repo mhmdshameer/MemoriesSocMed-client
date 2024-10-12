@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import moment from "moment";
 import { getPost, getSearchPosts } from "../../actions/posts";
+import CommentSection from "./CommentSection";
 
 const PostDetails = () => {
   const { post, posts, isLoading } = useSelector((state) => state.posts);
@@ -85,15 +86,14 @@ const PostDetails = () => {
             <strong>Realtime Chat - coming soon!</strong>
           </Typography>
           <Divider sx={{ margin: "20px 0" }} />
-          <Typography variant="body1">
-            <strong>Comments - coming soon!</strong>
-          </Typography>
+          <CommentSection post={post} />
           <Divider sx={{ margin: "20px 0" }} />
         </Box>
         <Box
           sx={{
             margin: "20px",
             display: "flex",
+            flex:'1',
             marginLeft: { sm: "20px", xs: "0px" },
           }}
         >
