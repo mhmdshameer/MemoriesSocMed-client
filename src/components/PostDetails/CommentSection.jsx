@@ -1,5 +1,5 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { commentPost } from "../../actions/posts";
 
@@ -10,14 +10,18 @@ const CommentSection = ({ post }) => {
   const user = JSON.parse(localStorage.getItem("profile")); 
   const commentsRef = useRef()
 
+  useEffect(() => {
+  }, [comments]);
+  
   const handleClick = async () => {
     const finalComment = `${user.result.name}: ${comment}`;
     const newComments = await dispatch(commentPost(finalComment, post._id));
-
+    
     setComments(newComments)
     setComment('')
-
-    commentsRef.current.scrollIntoView({ behavior: "smooth" });
+    setTimeout(() => {
+      commentsRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+    }, 100);
   };
 
   return (
@@ -41,7 +45,8 @@ const CommentSection = ({ post }) => {
           </Typography>
           {comments.map((c, i) => (
             <Typography key={i} variant="subtitle1" gutterBottom>
-               {c}
+              <strong>{c.split(':')[0]}:</strong> 
+              {c.split(':')[1]}
             </Typography>
           ))}
           <div ref={commentsRef} />
