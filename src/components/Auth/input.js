@@ -2,7 +2,7 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import {  Grid2, IconButton, InputAdornment, TextField } from '@mui/material';
 import React from 'react';
 
-const Input = ({ name, half, handleChange, label, autoFocus, type, handleShowPassword }) => (
+const  Input = ({ name, half, handleChange, label, autoFocus, type, handleShowPassword }) => (
   <Grid2 item xs={12} sm={half ? 6 : 12}>
     <TextField
       name={name}

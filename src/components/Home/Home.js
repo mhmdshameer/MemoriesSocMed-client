@@ -4,7 +4,7 @@ import React, { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import Posts from '../Posts/Posts'
 import { useDispatch } from 'react-redux'
-import { getPost } from '../../actions/posts'
+
 
 
 

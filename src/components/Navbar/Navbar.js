@@ -61,8 +61,8 @@ const Navbar = () => {
   const handleAddTag = (e) => {
     if (e.key === "Enter" && search) {
       console.log(search);
-      setTags([...tags, search]); // Add the tag to the state
-      setSearch(""); // Clear the input field
+      setTags([...tags, search]);
+      setSearch(""); 
     }
   };
 

@@ -1,7 +1,19 @@
-import { CREATE, UPDATE, FETCH_ALL, DELETE, FETCH_BY_SEARCH, START_LOADING, END_LOADING, LIKE } from "../constants/actionTypes";
+import { CREATE, UPDATE, FETCH_ALL, DELETE, FETCH_BY_SEARCH, START_LOADING, END_LOADING, LIKE, FETCH_POST } from "../constants/actionTypes";
 import * as api from "../api";
 
-export const getPost = (page) => async (dispatch) => {
+export const getPost = (id) => async (dispatch) => {
+  try {
+    dispatch({type: START_LOADING});
+    console.log("reached")
+    const { data } = await api.fetchPost(id);
+    console.log(data)
+    dispatch({ type: FETCH_POST, payload: data });
+    dispatch({type: END_LOADING});
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const getPosts = (page) => async (dispatch) => {
   try {
     dispatch({type: START_LOADING});
     const { data } = await api.fetchPosts(page);
